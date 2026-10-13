@@ -12,33 +12,33 @@ export const ChocolateSnapIntro: React.FC<ChocolateSnapIntroProps> = ({
   onComplete,
   isReplay = false,
 }) => {
-  // Phases: 'enter' (0-600ms) -> 'tension' (600-1000ms) -> 'snap' (1000-2600ms) -> 'exit' (2600-3000ms)
+  // Snappy timing: enter -> tension (350ms) -> snap (750ms) -> exit (2000ms) -> unmount (2400ms)
   const [phase, setPhase] = useState<'enter' | 'tension' | 'snap' | 'exit'>('enter');
-  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [soundEnabled, setSoundEnabled] = useState(false);
 
   useEffect(() => {
     // Phase 1: Enter -> Tension
     const t1 = setTimeout(() => {
       setPhase('tension');
-    }, 600);
+    }, 350);
 
-    // Phase 2: Snap!
+    // Phase 2: Snap in 2!
     const t2 = setTimeout(() => {
       setPhase('snap');
       if (soundEnabled) {
         playChocolateSnapSound();
       }
-    }, 1100);
+    }, 750);
 
-    // Phase 3: Exit transition
+    // Phase 3: Smooth exit transition
     const t3 = setTimeout(() => {
       setPhase('exit');
-    }, 2800);
+    }, 2000);
 
     // Phase 4: Final unmount
     const t4 = setTimeout(() => {
       onComplete();
-    }, 3300);
+    }, 2450);
 
     return () => {
       clearTimeout(t1);
@@ -50,9 +50,7 @@ export const ChocolateSnapIntro: React.FC<ChocolateSnapIntroProps> = ({
 
   const handleSkip = () => {
     setPhase('exit');
-    setTimeout(() => {
-      onComplete();
-    }, 250);
+    onComplete();
   };
 
   const isSnapped = phase === 'snap' || phase === 'exit';
@@ -94,10 +92,10 @@ export const ChocolateSnapIntro: React.FC<ChocolateSnapIntroProps> = ({
 
         <button
           onClick={handleSkip}
-          className="flex items-center gap-1 px-3.5 py-1.5 rounded-lg bg-[#24130D] border border-[#3E2218] text-[#FAF5EE] hover:bg-[#341B13] transition-colors font-medium text-xs"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#2D1710] border border-[#542B1E] text-[#FAF5EE] hover:bg-[#3D2015] hover:border-[#E58B24] transition-all font-semibold text-xs shadow-lg"
         >
-          <span>Skip Intro</span>
-          <ArrowRight className="w-3 h-3" />
+          <span>Enter Website</span>
+          <ArrowRight className="w-3.5 h-3.5 text-[#E58B24]" />
         </button>
       </div>
 

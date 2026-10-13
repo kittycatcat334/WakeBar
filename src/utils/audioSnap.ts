@@ -9,8 +9,9 @@ export function playChocolateSnapSound() {
     if (!AudioContextClass) return;
 
     const ctx = new AudioContextClass();
+    // Do not attempt to resume if suspended by browser autoplay policy
     if (ctx.state === 'suspended') {
-      ctx.resume().catch(() => {});
+      return;
     }
 
     const now = ctx.currentTime;
