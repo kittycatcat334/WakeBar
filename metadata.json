@@ -1,0 +1,6 @@
+{
+  "name": "Wakebar | Functional Focus Dark Chocolate",
+  "description": "Premium functional dark chocolate infused with L-theanine, nuts & seeds, and vitamin B complex. Better focus, steady energy, and zero jitters.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
