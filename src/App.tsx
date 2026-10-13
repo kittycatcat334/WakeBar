@@ -13,8 +13,10 @@ import { FaqSection } from './components/FaqSection';
 import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
 import { Footer } from './components/Footer';
+import { ChocolateSnapIntro } from './components/ChocolateSnapIntro';
 
 export default function App() {
+  const [showSnapIntro, setShowSnapIntro] = useState(true);
   const [cartItems, setCartItems] = useState<CartItem[]>([
     {
       bundle: BUNDLES[1], // Focus 12-pack
@@ -97,6 +99,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#150F0D] text-[#FAF5EE] flex flex-col selection:bg-[#E58B24]/30 selection:text-white font-sans">
+      {/* Opening Chocolate Bar Snap in 2 Animation */}
+      {showSnapIntro && (
+        <ChocolateSnapIntro
+          onComplete={() => setShowSnapIntro(false)}
+        />
+      )}
+
       {/* Top Navbar */}
       <Navbar
         cartCount={cartCount}
@@ -110,6 +119,7 @@ export default function App() {
         <Hero
           onShopClick={scrollToShop}
           onExploreIngredients={scrollToWhatsInside}
+          onReplaySnap={() => setShowSnapIntro(true)}
         />
 
         {/* What's Inside? (Dedicated 5-ingredient breakdown from image) */}

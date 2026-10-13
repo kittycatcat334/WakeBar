@@ -7,9 +7,10 @@ import { SunGlyph } from './WakebarLogo';
 interface HeroProps {
   onShopClick: () => void;
   onExploreIngredients: () => void;
+  onReplaySnap?: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onShopClick, onExploreIngredients }) => {
+export const Hero: React.FC<HeroProps> = ({ onShopClick, onExploreIngredients, onReplaySnap }) => {
   const [activeCallout, setActiveCallout] = useState<number | null>(null);
 
   const callouts = [
@@ -79,7 +80,7 @@ export const Hero: React.FC<HeroProps> = ({ onShopClick, onExploreIngredients })
             </div>
 
             {/* Interactive CTAs */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
               <button
                 onClick={onShopClick}
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-[#1A0F0C] bg-[#E58B24] hover:bg-[#F59E0B] rounded-xl transition-all shadow-lg hover:shadow-[#E58B24]/20 active:scale-[0.99]"
@@ -90,11 +91,22 @@ export const Hero: React.FC<HeroProps> = ({ onShopClick, onExploreIngredients })
               
               <button
                 onClick={onExploreIngredients}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-medium text-[#E0CDBB] hover:text-white bg-[#221510] hover:bg-[#2C1B15] border border-[#3D251C] rounded-xl transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3.5 text-sm font-medium text-[#E0CDBB] hover:text-white bg-[#221510] hover:bg-[#2C1B15] border border-[#3D251C] rounded-xl transition-colors"
               >
                 <span>What's Inside?</span>
                 <ChevronRight className="w-4 h-4 text-[#8C7665]" />
               </button>
+
+              {onReplaySnap && (
+                <button
+                  onClick={onReplaySnap}
+                  className="inline-flex items-center justify-center gap-1.5 px-4 py-3.5 text-xs font-semibold text-[#E58B24] hover:text-[#FAF5EE] bg-[#2A1610] hover:bg-[#381F17] border border-[#48281D] rounded-xl transition-colors shrink-0"
+                  title="Replay Chocolate Snap Animation"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Replay Snap</span>
+                </button>
+              )}
             </div>
 
             {/* Trust markers */}
@@ -130,6 +142,18 @@ export const Hero: React.FC<HeroProps> = ({ onShopClick, onExploreIngredients })
 
                 {/* Scrim gradient overlay for luxury contrast */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#150F0D] via-transparent to-black/20 pointer-events-none" />
+
+                {/* Snap Animation Trigger Badge */}
+                {onReplaySnap && (
+                  <button
+                    onClick={onReplaySnap}
+                    className="absolute top-4 right-4 z-20 px-3 py-1.5 rounded-lg bg-[#180E0B]/90 hover:bg-[#281610] backdrop-blur-md border border-[#48281D] text-xs font-semibold text-[#E58B24] flex items-center gap-1.5 shadow-lg transition-transform hover:scale-105"
+                    title="Watch chocolate bar snap in two"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Watch Bar Snap In 2</span>
+                  </button>
+                )}
 
                 {/* Interactive Inspection Hotspots */}
                 {callouts.map((c, i) => (
