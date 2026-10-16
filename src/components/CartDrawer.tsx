@@ -255,7 +255,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                   title="Send cart order to WhatsApp"
                 >
                   <WhatsAppIcon className="w-4 h-4" />
-                  <span>Order via WhatsApp (Instant COD)</span>
+                  <span>Order via WhatsApp (+92 314-5160556)</span>
                 </a>
 
                 <button

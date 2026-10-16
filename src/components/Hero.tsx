@@ -97,9 +97,10 @@ export const Hero: React.FC<HeroProps> = ({ onShopClick, onExploreIngredients, o
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3.5 text-sm font-semibold text-emerald-400 bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-600/50 rounded-xl transition-all shadow-md"
+                title="Direct WhatsApp Order: +92 314-5160556"
               >
                 <WhatsAppIcon className="w-4 h-4" />
-                <span>Order via WhatsApp</span>
+                <span>Order via WhatsApp (+92 314-5160556)</span>
               </a>
 
               <button

@@ -20,14 +20,21 @@ export const Navbar: React.FC<NavbarProps> = ({ cartCount, onOpenCart, onScrollT
       {showPromo && (
         <div className="relative bg-[#26150F] text-[#E0CDBB] border-b border-[#3D251C] text-xs py-1.5 px-4 text-center">
           <div className="flex items-center justify-center gap-2 max-w-7xl mx-auto flex-wrap">
-            <span className="font-medium text-[#FAF5EE]">Fuel Your Focus:</span>
-            <span>Free cold-pouch thermal shipping in Pakistan on orders Rs. 3,500+ · Code</span>
+            <span className="font-medium text-[#FAF5EE]">Direct Orders & WhatsApp:</span>
+            <a
+              href="https://wa.me/923145160556"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-emerald-400 font-bold hover:underline tracking-wide"
+            >
+              +92 314-5160556
+            </a>
+            <span className="text-[#8C7665]">·</span>
+            <span>Free nationwide cold-pouch shipping on orders Rs. 3,500+ · Code</span>
             <span className="font-mono bg-[#381F16] px-1.5 py-0.5 rounded text-[#E58B24] font-semibold text-[11px]">
               FOCUS15
             </span>
             <span className="hidden sm:inline">for 15% off</span>
-            <span className="text-[#8C7665]">·</span>
-            <span className="text-emerald-400 font-medium">WhatsApp Orders Active</span>
           </div>
           <button
             onClick={() => setShowPromo(false)}
@@ -93,10 +100,10 @@ export const Navbar: React.FC<NavbarProps> = ({ cartCount, onOpenCart, onScrollT
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-emerald-400 bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-600/40 rounded-lg transition-colors whitespace-nowrap shrink-0 shadow-sm"
-            title="Chat & Order via WhatsApp"
+            title="Chat & Order via WhatsApp: +92 314-5160556"
           >
             <WhatsAppIcon className="w-3.5 h-3.5" />
-            <span>WhatsApp Order</span>
+            <span>WhatsApp: +92 314-5160556</span>
           </a>
 
           <button
@@ -184,7 +191,7 @@ export const Navbar: React.FC<NavbarProps> = ({ cartCount, onOpenCart, onScrollT
               className="w-full py-2.5 px-4 rounded-lg bg-emerald-950/70 border border-emerald-600/50 text-emerald-400 hover:text-emerald-300 font-semibold text-xs flex items-center justify-center gap-2"
             >
               <WhatsAppIcon className="w-4 h-4" />
-              <span>Order via WhatsApp</span>
+              <span>Order via WhatsApp (+92 314-5160556)</span>
             </a>
             <button
               onClick={() => {

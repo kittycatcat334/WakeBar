@@ -192,7 +192,7 @@ export const FocusCalculator: React.FC<FocusCalculatorProps> = ({ onAddToCart })
                 className="w-full py-2.5 px-3 rounded-xl text-xs font-semibold text-emerald-400 bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-600/50 transition-all flex items-center justify-center gap-2 shadow-sm"
               >
                 <WhatsAppIcon className="w-3.5 h-3.5" />
-                <span>Order via WhatsApp ({formatPKR(recommendation.bundle.price)})</span>
+                <span>Order via WhatsApp (+92 314-5160556)</span>
               </a>
             </div>
 

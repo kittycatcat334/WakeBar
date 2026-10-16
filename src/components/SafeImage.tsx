@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SunGlyph } from './WakebarLogo';
 
 interface SafeImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
@@ -18,23 +18,44 @@ export const SafeImage: React.FC<SafeImageProps> = ({
   ...rest
 }) => {
   const [currentSrc, setCurrentSrc] = useState<string>(src);
-  const [hasError, setHasError] = useState<boolean>(false);
-  const [triedFallback, setTriedFallback] = useState<boolean>(false);
+  const [attemptIndex, setAttemptIndex] = useState<number>(0);
+  const [hasExhausted, setHasExhausted] = useState<boolean>(false);
+
+  useEffect(() => {
+    setCurrentSrc(src);
+    setAttemptIndex(0);
+    setHasExhausted(false);
+  }, [src]);
 
   const handleError = () => {
-    if (!triedFallback && fallbackSrc && fallbackSrc !== currentSrc) {
-      setTriedFallback(true);
-      setCurrentSrc(fallbackSrc);
-    } else if (!triedFallback && src.startsWith('/assets/')) {
-      // Try relative dot-slash fallback
-      setTriedFallback(true);
-      setCurrentSrc('.' + src);
-    } else {
-      setHasError(true);
+    if (attemptIndex === 0) {
+      // Attempt 1: Try fallbackSrc if provided
+      if (fallbackSrc && fallbackSrc !== currentSrc) {
+        setAttemptIndex(1);
+        setCurrentSrc(fallbackSrc);
+        return;
+      }
+      // If fallbackSrc was relative './images', try root '/images/' or vice versa
+      const cleanName = currentSrc.split('/').pop()?.split('?')[0] || '';
+      if (cleanName) {
+        setAttemptIndex(1);
+        setCurrentSrc(`./images/${cleanName}`);
+        return;
+      }
+    } else if (attemptIndex === 1) {
+      // Attempt 2: Try with absolute path /images/
+      const cleanName = currentSrc.split('/').pop()?.split('?')[0] || '';
+      if (cleanName && !currentSrc.startsWith('/images/')) {
+        setAttemptIndex(2);
+        setCurrentSrc(`/images/${cleanName}`);
+        return;
+      }
     }
+    // All fallbacks exhausted, show brand visual
+    setHasExhausted(true);
   };
 
-  if (hasError) {
+  if (hasExhausted) {
     return (
       <div
         className={`bg-gradient-to-br from-[#241510] via-[#1B0F0B] to-[#120806] border border-[#43251B] flex flex-col items-center justify-center p-6 text-center select-none ${className}`}

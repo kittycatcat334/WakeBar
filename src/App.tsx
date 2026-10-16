@@ -160,6 +160,7 @@ export default function App() {
       <CheckoutModal
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}
+        items={cartItems}
         subtotal={checkoutData.subtotal}
         discount={checkoutData.discount}
         shipping={checkoutData.shipping}
@@ -173,13 +174,18 @@ export default function App() {
         href={createWhatsAppInquiryUrl('Direct WhatsApp Order')}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-40 bg-[#25D366] hover:bg-[#20ba59] text-white py-3 px-4 rounded-full shadow-2xl flex items-center gap-2.5 transition-all hover:scale-105 border border-white/20 active:scale-95"
-        title="Chat & Order via WhatsApp"
+        className="fixed bottom-6 right-6 z-40 bg-[#25D366] hover:bg-[#20ba59] text-white py-2.5 px-4 rounded-full shadow-2xl flex items-center gap-2.5 transition-all hover:scale-105 border border-white/20 active:scale-95 group"
+        title="Chat & Order via WhatsApp: +92 314-5160556"
       >
         <WhatsAppIcon className="w-5 h-5 text-white" />
-        <span className="hidden sm:inline-block text-xs font-bold tracking-wide">
-          Order on WhatsApp
-        </span>
+        <div className="flex flex-col text-left">
+          <span className="text-[11px] font-bold leading-tight tracking-wide">
+            Order on WhatsApp
+          </span>
+          <span className="hidden sm:inline text-[10px] text-emerald-100 font-mono">
+            +92 314-5160556
+          </span>
+        </div>
       </a>
 
       {/* Editorial Footer */}

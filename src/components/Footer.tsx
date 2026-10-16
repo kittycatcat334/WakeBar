@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { WakebarLogo } from './WakebarLogo';
-import { Check, ArrowRight } from 'lucide-react';
+import { Check, ArrowRight, Phone, Mail } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppIcon';
-import { createWhatsAppInquiryUrl } from '../utils/whatsapp';
+import { createWhatsAppInquiryUrl, getWhatsAppDisplayNumber, getOwnerEmail } from '../utils/whatsapp';
 
 export const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -95,7 +95,25 @@ export const Footer: React.FC = () => {
                   className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-semibold transition-colors"
                 >
                   <WhatsAppIcon className="w-3.5 h-3.5" />
-                  <span>WhatsApp Orders</span>
+                  <span>WhatsApp: {getWhatsAppDisplayNumber()}</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="tel:+923145160556"
+                  className="inline-flex items-center gap-1.5 text-[#C4B29E] hover:text-[#FAF5EE] transition-colors"
+                >
+                  <Phone className="w-3 h-3 text-[#E58B24]" />
+                  <span>Call: {getWhatsAppDisplayNumber()}</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${getOwnerEmail()}`}
+                  className="inline-flex items-center gap-1.5 text-[#C4B29E] hover:text-[#FAF5EE] transition-colors"
+                >
+                  <Mail className="w-3 h-3 text-[#E58B24]" />
+                  <span>Email: {getOwnerEmail()}</span>
                 </a>
               </li>
               <li>
@@ -105,7 +123,7 @@ export const Footer: React.FC = () => {
                 <span className="text-[#8C7665]">Direct Ethical Cocoa Trade</span>
               </li>
               <li>
-                <span className="text-[#8C7665]">Small Batch Production</span>
+                <span className="text-[#8C7665]">Cold-Pouch Delivery (COD)</span>
               </li>
             </ul>
           </div>

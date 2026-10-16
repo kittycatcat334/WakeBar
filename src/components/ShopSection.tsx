@@ -63,6 +63,26 @@ export const ShopSection: React.FC<ShopSectionProps> = ({ onAddToCart }) => {
           </div>
         </div>
 
+        {/* Direct WhatsApp Ordering notice */}
+        <div className="mb-8 p-3.5 sm:p-4 rounded-xl bg-emerald-950/30 border border-emerald-600/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#C4B29E]">
+          <div className="flex items-center gap-2.5">
+            <WhatsAppIcon className="w-5 h-5 text-emerald-400 shrink-0" />
+            <div>
+              <span className="font-semibold text-[#FAF5EE]">Prefer ordering or inquiring on WhatsApp?</span>
+              <p className="text-[11px] text-[#A89481]">We take custom bundles and fast Cash on Delivery orders directly at <strong className="text-emerald-400 font-mono">+92 314-5160556</strong></p>
+            </div>
+          </div>
+          <a
+            href="https://wa.me/923145160556?text=Hi%20Wakebar!%20I%20would%20like%20to%20place%20an%20order%20for%20focus%20chocolate."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3.5 py-1.5 rounded-lg bg-[#25D366] hover:bg-[#20ba59] text-white font-semibold text-xs transition-colors shrink-0 flex items-center gap-1.5 shadow-sm"
+          >
+            <WhatsAppIcon className="w-3.5 h-3.5 text-white" />
+            <span>Order via WhatsApp (+92 314-5160556)</span>
+          </a>
+        </div>
+
         {/* 3-Column Product Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-8 items-stretch">
           {BUNDLES.map((bundle) => {
