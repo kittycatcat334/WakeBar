@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, CheckCircle, Package, Truck, ShieldCheck, ArrowRight } from 'lucide-react';
 import { SunGlyph } from './WakebarLogo';
+import { WhatsAppIcon } from './WhatsAppIcon';
+import { formatPKR, getWhatsAppNumber } from '../utils/whatsapp';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -25,13 +27,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 }) => {
   const [step, setStep] = useState<'form' | 'confirmed'>('form');
   const [formData, setFormData] = useState({
-    name: 'Elena Rostova',
-    email: 'elena@craftdesign.co',
-    address: '424 Montgomery St, Floor 8',
-    city: 'San Francisco',
-    state: 'CA',
-    postalCode: '94104',
-    paymentMethod: 'card',
+    name: 'Zaid Khan',
+    phone: '0300 1234567',
+    email: 'zaid.focus@gmail.com',
+    address: 'House 24-B, Street 12, Sector F-7/2',
+    city: 'Islamabad',
+    province: 'Federal',
+    postalCode: '44000',
+    paymentMethod: 'cod',
   });
   const [orderId, setOrderId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -47,7 +50,27 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       setIsSubmitting(false);
       setStep('confirmed');
       onOrderCompleted();
-    }, 900);
+    }, 800);
+  };
+
+  const handleWhatsAppBooking = () => {
+    const waNumber = getWhatsAppNumber();
+    const text = `*New Wakebar Order (Checkout)* 🍫\n` +
+      `--------------------------\n` +
+      `*Name:* ${formData.name}\n` +
+      `*Phone:* ${formData.phone}\n` +
+      `*City:* ${formData.city}\n` +
+      `*Address:* ${formData.address}\n` +
+      `*Subtotal:* ${formatPKR(subtotal)}\n` +
+      (discount > 0 ? `*Discount (${promoCode || 'FOCUS15'}):* -${formatPKR(discount)}\n` : '') +
+      `*Shipping:* ${shipping === 0 ? 'FREE' : formatPKR(shipping)}\n` +
+      `*Total Due:* ${formatPKR(finalTotal)}\n` +
+      `*Payment:* Cash on Delivery (COD)\n` +
+      `--------------------------\n` +
+      `Please confirm my order dispatch!`;
+
+    window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`, '_blank');
+    handleSubmit({ preventDefault: () => {} } as any);
   };
 
   return (
@@ -74,28 +97,42 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             <div className="p-6 sm:p-8">
               <div className="flex items-center gap-2 mb-2 text-xs font-semibold text-[#E58B24] uppercase tracking-wider">
                 <SunGlyph className="w-4 h-2 text-[#E58B24]" />
-                <span>Express Focus Checkout</span>
+                <span>Express Focus Checkout (Pakistan)</span>
               </div>
 
               <h2 className="font-serif text-2xl font-bold text-[#FAF5EE]">
-                Thermal Shipping Details
+                Delivery & Payment Details
               </h2>
               <p className="text-xs text-[#A89481] mt-1">
-                Your bars are packed in insulated temperature-controlled pouches to maintain the perfect cacao snap.
+                Cash on Delivery (COD) available nationwide with temperature-controlled ice packaging.
               </p>
 
               <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-                <div>
-                  <label className="text-xs font-medium text-[#C4B29E] block mb-1">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#130B09] border border-[#361E16] text-xs text-[#FAF5EE] focus:border-[#E58B24] focus:outline-none"
-                  />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-xs font-medium text-[#C4B29E] block mb-1">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#130B09] border border-[#361E16] text-xs text-[#FAF5EE] focus:border-[#E58B24] focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-[#C4B29E] block mb-1">
+                      WhatsApp / Mobile No.
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#130B09] border border-[#361E16] text-xs text-[#FAF5EE] focus:border-[#E58B24] focus:outline-none"
+                    />
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -113,34 +150,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   </div>
                   <div>
                     <label className="text-xs font-medium text-[#C4B29E] block mb-1">
-                      Postal Code
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.postalCode}
-                      onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#130B09] border border-[#361E16] text-xs text-[#FAF5EE] focus:border-[#E58B24] focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-xs font-medium text-[#C4B29E] block mb-1">
-                    Delivery Street Address
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.address}
-                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#130B09] border border-[#361E16] text-xs text-[#FAF5EE] focus:border-[#E58B24] focus:outline-none"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="text-xs font-medium text-[#C4B29E] block mb-1">
                       City
                     </label>
                     <input
@@ -151,58 +160,70 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       className="w-full px-3.5 py-2.5 rounded-xl bg-[#130B09] border border-[#361E16] text-xs text-[#FAF5EE] focus:border-[#E58B24] focus:outline-none"
                     />
                   </div>
-                  <div>
-                    <label className="text-xs font-medium text-[#C4B29E] block mb-1">
-                      State / Province
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.state}
-                      onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#130B09] border border-[#361E16] text-xs text-[#FAF5EE] focus:border-[#E58B24] focus:outline-none"
-                    />
-                  </div>
                 </div>
 
-                {/* Summary Box */}
+                <div>
+                  <label className="text-xs font-medium text-[#C4B29E] block mb-1">
+                    Complete Street Address
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.address}
+                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#130B09] border border-[#361E16] text-xs text-[#FAF5EE] focus:border-[#E58B24] focus:outline-none"
+                  />
+                </div>
+
+                {/* Summary Box in PKR */}
                 <div className="p-4 rounded-xl bg-[#130B09] border border-[#2D1912] space-y-1.5 text-xs text-[#A89481]">
                   <div className="flex justify-between">
                     <span>Order Subtotal:</span>
-                    <span className="font-mono text-[#FAF5EE]">${subtotal}</span>
+                    <span className="font-mono text-[#FAF5EE]">{formatPKR(subtotal)}</span>
                   </div>
                   {discount > 0 && (
                     <div className="flex justify-between text-emerald-400">
                       <span>Promo Discount ({promoCode}):</span>
-                      <span className="font-mono">-${discount}</span>
+                      <span className="font-mono">-{formatPKR(discount)}</span>
                     </div>
                   )}
                   <div className="flex justify-between">
-                    <span>Shipping Fee:</span>
+                    <span>Cold-Pouch Shipping:</span>
                     <span className="font-mono text-[#FAF5EE]">
-                      {shipping === 0 ? 'FREE (Over $35)' : `$${shipping}`}
+                      {shipping === 0 ? 'FREE (Over Rs. 3,500)' : formatPKR(shipping)}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm font-bold text-[#FAF5EE] pt-2 border-t border-[#291710]">
-                    <span>Total Due:</span>
-                    <span className="font-mono text-base text-[#E58B24]">${finalTotal}</span>
+                    <span>Total Due (Pay on Delivery):</span>
+                    <span className="font-mono text-base text-[#E58B24]">{formatPKR(finalTotal)}</span>
                   </div>
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full py-3.5 px-4 rounded-xl text-xs font-semibold uppercase tracking-wider bg-[#E58B24] hover:bg-[#F59E0B] text-[#1A0F0C] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50"
-                >
-                  {isSubmitting ? (
-                    <span>Securing Fresh Batch...</span>
-                  ) : (
-                    <>
-                      <span>Place Order · ${finalTotal}</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </>
-                  )}
-                </button>
+                <div className="space-y-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={handleWhatsAppBooking}
+                    className="w-full py-3.5 px-4 rounded-xl text-xs font-semibold uppercase tracking-wider bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-600/50 text-emerald-400 hover:text-emerald-300 transition-all flex items-center justify-center gap-2 shadow-lg"
+                  >
+                    <WhatsAppIcon className="w-4 h-4" />
+                    <span>Confirm & Book via WhatsApp</span>
+                  </button>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full py-3.5 px-4 rounded-xl text-xs font-semibold uppercase tracking-wider bg-[#E58B24] hover:bg-[#F59E0B] text-[#1A0F0C] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50"
+                  >
+                    {isSubmitting ? (
+                      <span>Reserving Fresh Batch...</span>
+                    ) : (
+                      <>
+                        <span>Place Order (Cash on Delivery) · {formatPKR(finalTotal)}</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
+                  </button>
+                </div>
               </form>
             </div>
           ) : (

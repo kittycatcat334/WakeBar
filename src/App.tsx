@@ -14,6 +14,8 @@ import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
 import { Footer } from './components/Footer';
 import { ChocolateSnapIntro } from './components/ChocolateSnapIntro';
+import { WhatsAppIcon } from './components/WhatsAppIcon';
+import { createWhatsAppInquiryUrl } from './utils/whatsapp';
 
 export default function App() {
   const [showSnapIntro, setShowSnapIntro] = useState(true);
@@ -27,10 +29,10 @@ export default function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [checkoutData, setCheckoutData] = useState({
-    subtotal: 39,
+    subtotal: 3950,
     discount: 0,
     shipping: 0,
-    finalTotal: 39,
+    finalTotal: 3950,
     promoCode: '',
   });
 
@@ -165,6 +167,20 @@ export default function App() {
         promoCode={checkoutData.promoCode}
         onOrderCompleted={handleOrderCompleted}
       />
+
+      {/* Floating WhatsApp Quick Order Button */}
+      <a
+        href={createWhatsAppInquiryUrl('Direct WhatsApp Order')}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-40 bg-[#25D366] hover:bg-[#20ba59] text-white py-3 px-4 rounded-full shadow-2xl flex items-center gap-2.5 transition-all hover:scale-105 border border-white/20 active:scale-95"
+        title="Chat & Order via WhatsApp"
+      >
+        <WhatsAppIcon className="w-5 h-5 text-white" />
+        <span className="hidden sm:inline-block text-xs font-bold tracking-wide">
+          Order on WhatsApp
+        </span>
+      </a>
 
       {/* Editorial Footer */}
       <Footer />

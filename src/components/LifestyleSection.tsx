@@ -1,6 +1,7 @@
 import React from 'react';
 import { ASSETS } from '../data/wakebarData';
 import { Sparkles, Sun, Clock3, Focus } from 'lucide-react';
+import { SafeImage } from './SafeImage';
 
 export const LifestyleSection: React.FC = () => {
   const rituals = [
@@ -47,11 +48,12 @@ export const LifestyleSection: React.FC = () => {
           {/* High Resolution Lifestyle Photography */}
           <div className="lg:col-span-7">
             <div className="relative rounded-2xl overflow-hidden border border-[#3E241A] shadow-2xl group aspect-[16/9] lg:aspect-[16/10] bg-[#140C0A]">
-              <img
+              <SafeImage
                 src={ASSETS.lifestyle}
+                fallbackSrc={ASSETS.lifestyleFallback}
                 alt="Mindful creator enjoying Wakebar focus chocolate at a sunlit wooden workspace"
+                captionTitle="Mindful Focus Rituals"
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
               

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { CartItem } from '../types';
 import { X, Trash2, Plus, Minus, ArrowRight, ShieldCheck, Tag } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
+import { SafeImage } from './SafeImage';
+import { createWhatsAppCartOrderUrl, formatPKR } from '../utils/whatsapp';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -33,8 +36,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   }, 0);
 
   const discountAmount = appliedPromo === 'FOCUS15' ? Math.round(rawSubtotal * 0.15) : 0;
-  const freeShippingThreshold = 35;
-  const shippingFee = rawSubtotal >= freeShippingThreshold || items.length === 0 ? 0 : 5;
+  const freeShippingThreshold = 3500; // Rs. 3,500 free thermal shipping threshold
+  const shippingFee = rawSubtotal >= freeShippingThreshold || items.length === 0 ? 0 : 250;
   const finalTotal = Math.max(0, rawSubtotal - discountAmount + shippingFee);
   const amountToFreeShipping = Math.max(0, freeShippingThreshold - rawSubtotal);
 
@@ -80,7 +83,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             {amountToFreeShipping > 0 ? (
               <div>
                 <p className="text-xs text-[#C4B29E]">
-                  Add <span className="font-bold text-[#E58B24]">${amountToFreeShipping}</span> more for Free Insulated Thermal Shipping!
+                  Add <span className="font-bold text-[#E58B24]">{formatPKR(amountToFreeShipping)}</span> more for Free Cold-Pouch Thermal Delivery!
                 </p>
                 <div className="w-full bg-[#140C0A] h-1.5 rounded-full mt-2 overflow-hidden">
                   <div
@@ -91,7 +94,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               </div>
             ) : (
               <p className="text-xs font-medium text-emerald-400 flex items-center gap-1.5">
-                <span>✓ You unlocked Free Priority Thermal Shipping!</span>
+                <span>✓ You unlocked Free Priority Thermal Delivery across Pakistan!</span>
               </p>
             )}
           </div>
@@ -122,9 +125,11 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                     key={`${item.bundle.id}-${item.isSubscription}-${index}`}
                     className="p-3.5 rounded-xl bg-[#1E110D] border border-[#361E16] flex gap-3.5"
                   >
-                    <img
+                    <SafeImage
                       src={item.bundle.image}
+                      fallbackSrc={item.bundle.fallbackImage}
                       alt={item.bundle.name}
+                      captionTitle={item.bundle.name}
                       className="w-16 h-16 rounded-lg object-cover bg-[#140C0A] border border-[#2E1912] shrink-0"
                     />
 
@@ -134,7 +139,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                           {item.bundle.name}
                         </h4>
                         <span className="font-mono text-xs font-bold text-[#FAF5EE]">
-                          ${itemPrice * item.quantity}
+                          {formatPKR(itemPrice * item.quantity)}
                         </span>
                       </div>
 
@@ -221,33 +226,46 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               <div className="space-y-1.5 text-xs text-[#A89481]">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="font-mono text-[#FAF5EE]">${rawSubtotal}</span>
+                  <span className="font-mono text-[#FAF5EE]">{formatPKR(rawSubtotal)}</span>
                 </div>
                 {discountAmount > 0 && (
                   <div className="flex justify-between text-emerald-400">
                     <span>Discount (FOCUS15)</span>
-                    <span className="font-mono">-${discountAmount}</span>
+                    <span className="font-mono">-{formatPKR(discountAmount)}</span>
                   </div>
                 )}
                 <div className="flex justify-between">
-                  <span>Insulated Shipping</span>
+                  <span>Thermal Shipping</span>
                   <span className="font-mono text-[#FAF5EE]">
-                    {shippingFee === 0 ? 'FREE' : `$${shippingFee}`}
+                    {shippingFee === 0 ? 'FREE' : formatPKR(shippingFee)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm font-bold text-[#FAF5EE] pt-2 border-t border-[#311C15]">
-                  <span>Estimated Total</span>
-                  <span className="font-mono text-base text-[#E58B24]">${finalTotal}</span>
+                  <span>Total Payable</span>
+                  <span className="font-mono text-base text-[#E58B24]">{formatPKR(finalTotal)}</span>
                 </div>
               </div>
 
-              <button
-                onClick={() => onCheckout(rawSubtotal, discountAmount, shippingFee, finalTotal, appliedPromo || '')}
-                className="w-full py-3.5 px-4 rounded-xl text-xs font-semibold uppercase tracking-wider bg-[#E58B24] hover:bg-[#F59E0B] text-[#1A0F0C] transition-all flex items-center justify-center gap-2 shadow-lg"
-              >
-                <span>Proceed to Checkout</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+              <div className="space-y-2">
+                <a
+                  href={createWhatsAppCartOrderUrl(items, rawSubtotal, discountAmount, shippingFee, finalTotal, appliedPromo || '')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 px-4 rounded-xl text-xs font-semibold uppercase tracking-wider bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-600/50 text-emerald-400 hover:text-emerald-300 transition-all flex items-center justify-center gap-2 shadow-lg"
+                  title="Send cart order to WhatsApp"
+                >
+                  <WhatsAppIcon className="w-4 h-4" />
+                  <span>Order via WhatsApp (Instant COD)</span>
+                </a>
+
+                <button
+                  onClick={() => onCheckout(rawSubtotal, discountAmount, shippingFee, finalTotal, appliedPromo || '')}
+                  className="w-full py-3 px-4 rounded-xl text-xs font-semibold uppercase tracking-wider bg-[#E58B24] hover:bg-[#F59E0B] text-[#1A0F0C] transition-all flex items-center justify-center gap-2 shadow-lg"
+                >
+                  <span>Checkout on Website</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
 
               <div className="text-center flex items-center justify-center gap-1.5 text-[11px] text-[#8C7665]">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#E58B24]" />

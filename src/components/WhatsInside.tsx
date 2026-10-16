@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { INGREDIENTS, ASSETS } from '../data/wakebarData';
 import { PillarIcon } from './BrandPillarIcons';
 import { Info, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
+import { SafeImage } from './SafeImage';
 
 export const WhatsInside: React.FC = () => {
   const [selectedIngredient, setSelectedIngredient] = useState<string>(INGREDIENTS[0].id);
@@ -130,11 +131,12 @@ export const WhatsInside: React.FC = () => {
           {/* Culinary Flatlay Visual Asset */}
           <div className="lg:col-span-6">
             <div className="relative rounded-xl overflow-hidden border border-[#3E241A] bg-[#140C0A] aspect-[4/3] group">
-              <img
+              <SafeImage
                 src={ASSETS.ingredients}
+                fallbackSrc={ASSETS.ingredientsFallback}
                 alt="Artisanal flatlay of raw cacao chunks, green tea leaves, pumpkin seeds, and almonds"
+                captionTitle="Clean Functional Ingredients"
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
               <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs text-[#FAF5EE]">

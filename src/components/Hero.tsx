@@ -3,6 +3,9 @@ import { ArrowRight, Sparkles, Check, ChevronRight } from 'lucide-react';
 import { ASSETS, PILLARS } from '../data/wakebarData';
 import { PillarIcon } from './BrandPillarIcons';
 import { SunGlyph } from './WakebarLogo';
+import { WhatsAppIcon } from './WhatsAppIcon';
+import { SafeImage } from './SafeImage';
+import { createWhatsAppInquiryUrl } from '../utils/whatsapp';
 
 interface HeroProps {
   onShopClick: () => void;
@@ -80,27 +83,37 @@ export const Hero: React.FC<HeroProps> = ({ onShopClick, onExploreIngredients, o
             </div>
 
             {/* Interactive CTAs */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 flex-wrap">
               <button
                 onClick={onShopClick}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-[#1A0F0C] bg-[#E58B24] hover:bg-[#F59E0B] rounded-xl transition-all shadow-lg hover:shadow-[#E58B24]/20 active:scale-[0.99]"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold uppercase tracking-wider text-[#1A0F0C] bg-[#E58B24] hover:bg-[#F59E0B] rounded-xl transition-all shadow-lg hover:shadow-[#E58B24]/20 active:scale-[0.99]"
               >
                 <span>Order Wakebars</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
               
+              <a
+                href={createWhatsAppInquiryUrl('Direct Order via WhatsApp')}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3.5 text-sm font-semibold text-emerald-400 bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-600/50 rounded-xl transition-all shadow-md"
+              >
+                <WhatsAppIcon className="w-4 h-4" />
+                <span>Order via WhatsApp</span>
+              </a>
+
               <button
                 onClick={onExploreIngredients}
-                className="inline-flex items-center justify-center gap-2 px-5 py-3.5 text-sm font-medium text-[#E0CDBB] hover:text-white bg-[#221510] hover:bg-[#2C1B15] border border-[#3D251C] rounded-xl transition-colors"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-3.5 text-sm font-medium text-[#E0CDBB] hover:text-white bg-[#221510] hover:bg-[#2C1B15] border border-[#3D251C] rounded-xl transition-colors"
               >
-                <span>What's Inside?</span>
+                <span>Ingredients</span>
                 <ChevronRight className="w-4 h-4 text-[#8C7665]" />
               </button>
 
               {onReplaySnap && (
                 <button
                   onClick={onReplaySnap}
-                  className="inline-flex items-center justify-center gap-1.5 px-4 py-3.5 text-xs font-semibold text-[#E58B24] hover:text-[#FAF5EE] bg-[#2A1610] hover:bg-[#381F17] border border-[#48281D] rounded-xl transition-colors shrink-0"
+                  className="inline-flex items-center justify-center gap-1.5 px-3.5 py-3.5 text-xs font-semibold text-[#E58B24] hover:text-[#FAF5EE] bg-[#2A1610] hover:bg-[#381F17] border border-[#48281D] rounded-xl transition-colors shrink-0"
                   title="Replay Chocolate Snap Animation"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
@@ -133,11 +146,12 @@ export const Hero: React.FC<HeroProps> = ({ onShopClick, onExploreIngredients, o
               
               {/* Product Visual */}
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1A0E0B]">
-                <img
+                <SafeImage
                   src={ASSETS.heroBar}
+                  fallbackSrc={ASSETS.heroBarFallback}
                   alt="Wakebar premium functional dark chocolate bar with nuts and seeds"
+                  captionTitle="Wakebar 72% Dark Chocolate"
                   className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                  referrerPolicy="no-referrer"
                 />
 
                 {/* Scrim gradient overlay for luxury contrast */}

@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { playChocolateSnapSound } from '../utils/audioSnap';
 import { SunGlyph } from './WakebarLogo';
-import { Volume2, VolumeX, Sparkles, ArrowRight } from 'lucide-react';
+import { Volume2, VolumeX, Sparkles, ArrowRight, Github, ExternalLink } from 'lucide-react';
+import { getStoredGithubUrl } from '../data/githubConfig';
 
 interface ChocolateSnapIntroProps {
   onComplete: () => void;
   isReplay?: boolean;
+  githubUrl?: string;
 }
 
 export const ChocolateSnapIntro: React.FC<ChocolateSnapIntroProps> = ({
   onComplete,
   isReplay = false,
+  githubUrl = getStoredGithubUrl(),
 }) => {
   // Snappy timing: enter -> tension (350ms) -> snap (750ms) -> exit (2000ms) -> unmount (2400ms)
   const [phase, setPhase] = useState<'enter' | 'tension' | 'snap' | 'exit'>('enter');
@@ -53,6 +56,12 @@ export const ChocolateSnapIntro: React.FC<ChocolateSnapIntroProps> = ({
     onComplete();
   };
 
+  const handleGithubClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Allow opening website when clicking github link
+    handleSkip();
+  };
+
   const isSnapped = phase === 'snap' || phase === 'exit';
   const isTension = phase === 'tension';
 
@@ -67,7 +76,7 @@ export const ChocolateSnapIntro: React.FC<ChocolateSnapIntroProps> = ({
       <div className="absolute w-[600px] h-[600px] bg-[#E58B24]/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute inset-0 bg-radial from-transparent via-[#120806]/60 to-[#0A0403] pointer-events-none" />
 
-      {/* Top Controls: Sound toggle & Skip */}
+      {/* Top Controls: Sound toggle, GitHub Link & Enter Website */}
       <div
         onClick={(e) => e.stopPropagation()}
         className="absolute top-6 left-6 right-6 flex items-center justify-between text-xs text-[#A89481] z-20"
@@ -90,13 +99,28 @@ export const ChocolateSnapIntro: React.FC<ChocolateSnapIntroProps> = ({
           )}
         </button>
 
-        <button
-          onClick={handleSkip}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#2D1710] border border-[#542B1E] text-[#FAF5EE] hover:bg-[#3D2015] hover:border-[#E58B24] transition-all font-semibold text-xs shadow-lg"
-        >
-          <span>Enter Website</span>
-          <ArrowRight className="w-3.5 h-3.5 text-[#E58B24]" />
-        </button>
+        <div className="flex items-center gap-2.5">
+          <a
+            href={githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleGithubClick}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#22120C] border border-[#48281D] text-[#C4B29E] hover:text-[#FAF5EE] hover:border-[#E58B24] transition-all font-medium text-xs shadow-md"
+            title="Click GitHub link & open website"
+          >
+            <Github className="w-3.5 h-3.5 text-[#E58B24]" />
+            <span>GitHub Link</span>
+            <ExternalLink className="w-3 h-3 text-[#8C7665]" />
+          </a>
+
+          <button
+            onClick={handleSkip}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#2D1710] border border-[#542B1E] text-[#FAF5EE] hover:bg-[#3D2015] hover:border-[#E58B24] transition-all font-semibold text-xs shadow-lg"
+          >
+            <span>Enter Website</span>
+            <ArrowRight className="w-3.5 h-3.5 text-[#E58B24]" />
+          </button>
+        </div>
       </div>
 
       {/* Center Stage: The Chocolate Bar splitting in 2 */}
@@ -368,10 +392,19 @@ export const ChocolateSnapIntro: React.FC<ChocolateSnapIntroProps> = ({
             Same you, just more focused.
           </p>
 
-          <div className="mt-4 flex items-center justify-center gap-2 text-xs font-mono text-[#8C7665]">
-            <span>Click anywhere to explore</span>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-[#8C7665]">
+            <span>Click anywhere to open website</span>
             <span>·</span>
-            <span>72% Dark Chocolate + Seeds</span>
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleGithubClick}
+              className="inline-flex items-center gap-1.5 text-[#E58B24] hover:underline font-medium"
+            >
+              <Github className="w-3.5 h-3.5" />
+              <span>Click GitHub link to open website →</span>
+            </a>
           </div>
         </div>
 

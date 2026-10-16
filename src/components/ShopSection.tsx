@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { ProductBundle } from '../types';
 import { BUNDLES } from '../data/wakebarData';
 import { Check, ShoppingBag, ShieldCheck, Truck, RefreshCw } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
+import { SafeImage } from './SafeImage';
+import { createWhatsAppSingleOrderUrl, formatPKR } from '../utils/whatsapp';
 
 interface ShopSectionProps {
   onAddToCart: (bundle: ProductBundle, isSubscription: boolean) => void;
@@ -29,7 +32,7 @@ export const ShopSection: React.FC<ShopSectionProps> = ({ onAddToCart }) => {
             Choose Your Focus Bundle
           </h2>
           <p className="text-base sm:text-lg text-[#C4B29E] mt-3 font-light">
-            Individually packaged 40g bars sealed for peak roasted crunch and cacao aroma.
+            Individually packaged 40g bars sealed for peak roasted crunch and cacao aroma. Dispatched cold across Pakistan.
           </p>
 
           {/* One-time vs Subscribe Toggle */}
@@ -65,7 +68,7 @@ export const ShopSection: React.FC<ShopSectionProps> = ({ onAddToCart }) => {
           {BUNDLES.map((bundle) => {
             const rawPrice = bundle.price;
             const finalPrice = purchaseType === 'subscription' ? Math.round(rawPrice * 0.85) : rawPrice;
-            const pricePerBar = (finalPrice / bundle.barCount).toFixed(2);
+            const pricePerBar = Math.round(finalPrice / bundle.barCount);
             const isAdded = addedId === bundle.id;
 
             return (
@@ -89,11 +92,12 @@ export const ShopSection: React.FC<ShopSectionProps> = ({ onAddToCart }) => {
                 <div>
                   {/* Product Card Image */}
                   <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-2xl bg-[#170E0B]">
-                    <img
+                    <SafeImage
                       src={bundle.image}
+                      fallbackSrc={bundle.fallbackImage}
                       alt={bundle.name}
+                      captionTitle={bundle.name}
                       className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                      referrerPolicy="no-referrer"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#1C110D] via-transparent to-transparent pointer-events-none" />
                   </div>
@@ -105,7 +109,7 @@ export const ShopSection: React.FC<ShopSectionProps> = ({ onAddToCart }) => {
                         {bundle.weight}
                       </span>
                       <span className="text-xs font-mono text-[#E58B24]">
-                        ${pricePerBar} / bar
+                        Rs. {pricePerBar.toLocaleString('en-PK')} / bar
                       </span>
                     </div>
 
@@ -138,50 +142,63 @@ export const ShopSection: React.FC<ShopSectionProps> = ({ onAddToCart }) => {
                   <div className="flex items-baseline justify-between mb-4">
                     <div>
                       <span className="text-xs text-[#8C7665] block">
-                        {purchaseType === 'subscription' ? 'Auto-delivered monthly' : 'One-time total'}
+                        {purchaseType === 'subscription' ? 'Auto-delivered monthly' : 'Total Price (COD Available)'}
                       </span>
                       <div className="flex items-baseline gap-2">
-                        <span className="font-serif text-3xl font-extrabold text-[#FAF5EE] tabular-nums">
-                          ${finalPrice}
+                        <span className="font-serif text-2xl sm:text-3xl font-extrabold text-[#FAF5EE] tabular-nums">
+                          {formatPKR(finalPrice)}
                         </span>
                         {bundle.originalPrice && purchaseType === 'onetime' && (
                           <span className="text-xs text-[#8C7665] line-through font-mono">
-                            ${bundle.originalPrice}
+                            {formatPKR(bundle.originalPrice)}
                           </span>
                         )}
                         {purchaseType === 'subscription' && (
                           <span className="text-xs text-[#8C7665] line-through font-mono">
-                            ${rawPrice}
+                            {formatPKR(rawPrice)}
                           </span>
                         )}
                       </div>
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => handleAdd(bundle)}
-                    className={`w-full py-3.5 px-4 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
-                      isAdded
-                        ? 'bg-emerald-600 text-white'
-                        : bundle.popular
-                        ? 'bg-[#E58B24] hover:bg-[#F59E0B] text-[#1A0F0C]'
-                        : 'bg-[#2B1812] hover:bg-[#382018] text-[#FAF5EE] border border-[#48281D]'
-                    }`}
-                  >
-                    {isAdded ? (
-                      <>
-                        <Check className="w-4 h-4" />
-                        <span>Added to Bag!</span>
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingBag className="w-4 h-4" />
-                        <span>
-                          {purchaseType === 'subscription' ? 'Subscribe Now' : 'Add to Cart'}
-                        </span>
-                      </>
-                    )}
-                  </button>
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => handleAdd(bundle)}
+                      className={`w-full py-3.5 px-4 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
+                        isAdded
+                          ? 'bg-emerald-600 text-white'
+                          : bundle.popular
+                          ? 'bg-[#E58B24] hover:bg-[#F59E0B] text-[#1A0F0C]'
+                          : 'bg-[#2B1812] hover:bg-[#382018] text-[#FAF5EE] border border-[#48281D]'
+                      }`}
+                    >
+                      {isAdded ? (
+                        <>
+                          <Check className="w-4 h-4" />
+                          <span>Added to Bag!</span>
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingBag className="w-4 h-4" />
+                          <span>
+                            {purchaseType === 'subscription' ? 'Subscribe Now' : 'Add to Cart'}
+                          </span>
+                        </>
+                      )}
+                    </button>
+
+                    <a
+                      href={createWhatsAppSingleOrderUrl(bundle, purchaseType === 'subscription')}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-2.5 px-3 rounded-xl text-xs font-semibold text-emerald-400 bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-600/50 transition-all flex items-center justify-center gap-1.5 shadow-sm"
+                      title="Quick Order on WhatsApp"
+                    >
+                      <WhatsAppIcon className="w-3.5 h-3.5" />
+                      <span>Order on WhatsApp</span>
+                    </a>
+                  </div>
                 </div>
 
               </div>

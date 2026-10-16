@@ -9,6 +9,7 @@ export interface ProductBundle {
   badge?: string;
   popular?: boolean;
   image: string;
+  fallbackImage?: string;
   description: string;
   features: string[];
 }

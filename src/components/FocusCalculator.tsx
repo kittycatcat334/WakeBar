@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { ProductBundle } from '../types';
 import { BUNDLES } from '../data/wakebarData';
 import { Sparkles, Clock, Check, ArrowRight, RotateCcw } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
+import { createWhatsAppSingleOrderUrl, formatPKR } from '../utils/whatsapp';
 
 interface FocusCalculatorProps {
   onAddToCart: (bundle: ProductBundle, isSub: boolean) => void;
@@ -169,9 +171,9 @@ export const FocusCalculator: React.FC<FocusCalculatorProps> = ({ onAddToCart })
               </div>
             </div>
 
-            <div className="pt-2 border-t border-[#3B2218]">
-              <div className="flex items-center justify-between text-xs mb-3">
-                <span className="text-[#A89481]">Suggested Starter Pack:</span>
+            <div className="pt-2 border-t border-[#3B2218] space-y-2">
+              <div className="flex items-center justify-between text-xs mb-2">
+                <span className="text-[#A89481]">Suggested Focus Pack:</span>
                 <span className="font-serif font-bold text-[#FAF5EE]">{recommendation.bundle.name}</span>
               </div>
 
@@ -179,9 +181,19 @@ export const FocusCalculator: React.FC<FocusCalculatorProps> = ({ onAddToCart })
                 onClick={() => onAddToCart(recommendation.bundle, false)}
                 className="w-full py-3.5 px-4 rounded-xl text-xs font-semibold uppercase tracking-wider bg-[#E58B24] hover:bg-[#F59E0B] text-[#1A0F0C] transition-all flex items-center justify-center gap-2 shadow-lg"
               >
-                <span>Add {recommendation.bundle.name} to Cart (${recommendation.bundle.price})</span>
+                <span>Add to Cart ({formatPKR(recommendation.bundle.price)})</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
+
+              <a
+                href={createWhatsAppSingleOrderUrl(recommendation.bundle, false)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2.5 px-3 rounded-xl text-xs font-semibold text-emerald-400 bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-600/50 transition-all flex items-center justify-center gap-2 shadow-sm"
+              >
+                <WhatsAppIcon className="w-3.5 h-3.5" />
+                <span>Order via WhatsApp ({formatPKR(recommendation.bundle.price)})</span>
+              </a>
             </div>
 
           </div>

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { WakebarLogo } from './WakebarLogo';
 import { Check, ArrowRight } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
+import { createWhatsAppInquiryUrl } from '../utils/whatsapp';
 
 export const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -83,6 +85,17 @@ export const Footer: React.FC = () => {
               <li>
                 <a href="#reviews" className="hover:text-[#FAF5EE] transition-colors">
                   Customer Reviews
+                </a>
+              </li>
+              <li>
+                <a
+                  href={createWhatsAppInquiryUrl('Customer Support / Orders')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-semibold transition-colors"
+                >
+                  <WhatsAppIcon className="w-3.5 h-3.5" />
+                  <span>WhatsApp Orders</span>
                 </a>
               </li>
               <li>

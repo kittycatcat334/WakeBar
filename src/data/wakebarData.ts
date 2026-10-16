@@ -1,10 +1,19 @@
 import { ProductBundle, IngredientItem, ReviewItem, FaqItem } from '../types';
+import heroBarImg from '../assets/images/wakebar_hero_bar_1791919680790.jpg';
+import ingredientsImg from '../assets/images/wakebar_ingredients_1791919681882.jpg';
+import lifestyleImg from '../assets/images/wakebar_lifestyle_focus_1791919683360.jpg';
+import boxBundleImg from '../assets/images/wakebar_box_bundle_1791919682458.jpg';
 
 export const ASSETS = {
-  heroBar: '/src/assets/images/wakebar_hero_bar_1791919680790.jpg',
-  ingredients: '/src/assets/images/wakebar_ingredients_1791919681882.jpg',
-  lifestyle: '/src/assets/images/wakebar_lifestyle_focus_1791919683360.jpg',
-  boxBundle: '/src/assets/images/wakebar_box_bundle_1791919682458.jpg',
+  heroBar: heroBarImg,
+  ingredients: ingredientsImg,
+  lifestyle: lifestyleImg,
+  boxBundle: boxBundleImg,
+  // Reliable public relative fallbacks for Cloudflare, GitHub Pages, or any CDN
+  heroBarFallback: './images/wakebar_hero_bar.jpg',
+  ingredientsFallback: './images/wakebar_ingredients.jpg',
+  lifestyleFallback: './images/wakebar_lifestyle.jpg',
+  boxBundleFallback: './images/wakebar_box_bundle.jpg',
 };
 
 export const BRAND_INFO = {
@@ -52,7 +61,7 @@ export const INGREDIENTS: IngredientItem[] = [
     id: 'dark-chocolate',
     title: 'PREMIUM DARK CHOCOLATE',
     purpose: 'for natural alertness and mood boost',
-    detail: 'Fair-trade 72% Ecuadorian heirloom cacao rich in polyphenols and natural theobromine for prolonged alertness without acidic coffee upset.',
+    detail: 'Fair-trade 72% heirloom cacao rich in polyphenols and natural theobromine for prolonged alertness without acidic coffee upset.',
     clinicalNote: 'Natural theobromine dilates blood vessels for effortless mental blood flow rather than heart palpitations.',
     amount: '72% Cacao',
     iconName: 'cocoa',
@@ -102,51 +111,54 @@ export const BUNDLES: ProductBundle[] = [
     subtitle: 'The Weekday Focus Routine',
     barCount: 6,
     weight: '240g (6 × 40g)',
-    price: 24,
+    price: 2150,
     image: ASSETS.heroBar,
+    fallbackImage: ASSETS.heroBarFallback,
     description: 'Perfect introduction for those wanting steady daily clarity Monday through Saturday without morning coffee.',
     features: [
       '6 individually sealed 40g bars',
       'Ideal for morning desk sprints or 2PM slumps',
-      'Freshness-locked compostable wrapper',
-      '30-day taste guarantee',
+      'Freshness-locked thermal packaging',
+      'Cash on Delivery (COD) across Pakistan',
     ],
   },
   {
     id: 'flow-12',
     name: 'Focus 12-Pack',
-    subtitle: 'Most Popular · Save 15%',
+    subtitle: 'Most Popular · Save Rs. 550',
     barCount: 12,
     weight: '480g (12 × 40g)',
-    price: 39,
-    originalPrice: 48,
+    price: 3950,
+    originalPrice: 4500,
     popular: true,
     badge: 'BESTSELLER',
     image: ASSETS.boxBundle,
+    fallbackImage: ASSETS.boxBundleFallback,
     description: 'Our signature boxed edition. Two full weeks of clean mental performance for deep work and active afternoons.',
     features: [
       '12 premium 40g bars in collector display box',
-      'Save $9 over individual pricing',
-      'Free expedited shipping over $35',
-      'Complimentary Wakebar desk notebook',
+      'Save Rs. 550 over individual pricing',
+      'Free thermal delivery across Pakistan',
+      'Instant WhatsApp order confirmation',
     ],
   },
   {
     id: 'monthly-24',
     name: 'Monthly Deep Work 24-Pack',
-    subtitle: 'Full Month Supply · Save 25%',
+    subtitle: 'Full Month Supply · Save Rs. 1,550',
     barCount: 24,
     weight: '960g (24 × 40g)',
-    price: 72,
-    originalPrice: 96,
+    price: 7450,
+    originalPrice: 9000,
     badge: 'MAX VALUE',
     image: ASSETS.boxBundle,
+    fallbackImage: ASSETS.boxBundleFallback,
     description: 'Designed for high performers, developers, creatives, and non-caffeine drinkers who demand unwavering focus every workday.',
     features: [
       '24 bars in twin storage dispenser cartons',
-      'Lowest price per bar ($3.00/bar)',
+      'Lowest price per bar (Rs. 310/bar)',
       'Free priority thermal-insulated shipping',
-      'Priority access to limited small-batch flavors',
+      'Priority dispatch via Courier & WhatsApp updates',
     ],
   },
 ];
